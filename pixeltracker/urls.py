@@ -21,7 +21,7 @@ from core import views
 template = TemplateView.as_view(template_name='index.html')
 
 urlpatterns = [
-    path('tracker', views.track_visitor, name='tracker'),
+    path('tracker.gif', views.track_visitor, name='tracker'),
     path('contact.html', template, name='contact'),
     path('about.html', template, name='about'),
 ]

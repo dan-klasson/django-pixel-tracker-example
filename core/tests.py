@@ -1,14 +1,11 @@
 from django.test import TestCase, Client
-
 from .models import PixelTracking
 
 
 class TrackVisitorCase(TestCase):
-    # def setUp(self):
-
     def test_first_call(self):
         client = Client(HTTP_REFERER='http://www.example.com/foo')
-        res = client.get('/tracker')
+        res = client.get('/tracker.gif')
 
         self.assertEqual(res.status_code, 200)
 
@@ -22,10 +19,10 @@ class TrackVisitorCase(TestCase):
     def test_multiple_calls(self):
         client = Client(HTTP_REFERER='http://www.example.com/foo')
 
-        res = client.get('/tracker')
+        res = client.get('/tracker.gif')
         self.assertEqual(res.status_code, 200)
 
-        res = client.get('/tracker')
+        res = client.get('/tracker.gif')
         self.assertEqual(res.status_code, 200)
         self.assertEqual(PixelTracking.objects.count(), 2)
 
@@ -34,13 +31,13 @@ class TrackVisitorCase(TestCase):
         self.assertEqual(first.user_id, last.user_id)
 
     def test_missing_referer(self):
-        res = self.client.get('/tracker')
+        res = self.client.get('/tracker.gif')
         self.assertEqual(res.status_code, 400)
         self.assertEqual(PixelTracking.objects.count(), 0)
 
     def test_incorrect_tracker(self):
         client = Client(HTTP_REFERER='http://www.example.com/incorrect')
         client.cookies['tracker'] = 'invalid-uuid'
-        res = client.get('/tracker')
+        res = client.get('/tracker.gif')
         self.assertEqual(res.status_code, 400)
         self.assertEqual(PixelTracking.objects.count(), 0)

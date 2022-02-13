@@ -1,10 +1,7 @@
 import base64
-from urllib.parse import urlparse
-from django.utils import timezone
 from django.shortcuts import render
 from django.http import HttpResponse, parse_cookie
-from django.core.exceptions import SuspiciousOperation, ValidationError
-
+from django.core.exceptions import SuspiciousOperation
 
 from .services import TrackVisitor
 
